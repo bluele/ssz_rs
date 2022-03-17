@@ -4,6 +4,8 @@ use crate::merkleization::{
     BYTES_PER_CHUNK,
 };
 use crate::ser::{serialize_composite, Serialize, SerializeError};
+use crate::{SimpleSerialize, Sized};
+use crate::std::{Enumerate, FromIterator, Vec, fmt, SliceIndex, Deref, Index, IndexMut, IterMut as StdIterMut};
 use crate::{SimpleSerialize, SimpleSerializeError, Sized};
 #[cfg(feature = "serde")]
 use serde::ser::SerializeSeq;
@@ -15,10 +17,9 @@ use std::slice::SliceIndex;
 use std::{fmt, slice};
 use thiserror::Error;
 
-#[derive(Error, Debug)]
-pub enum Error {
-    #[error("{provided} elements given that exceeds the list bound of {expected}")]
-    IncorrectLength { expected: usize, provided: usize },
+#[derive(Debug)]
+pub enum ListError {
+    IncorrectLength , // elements given that exceeds the list bound of
 }
 
 /// A homogenous collection of a variable number of values.
@@ -123,14 +124,11 @@ impl<T, const N: usize> TryFrom<Vec<T>> for List<T, N>
 where
     T: SimpleSerialize,
 {
-    type Error = SimpleSerializeError;
+    type Error = ListError;
 
     fn try_from(data: Vec<T>) -> Result<Self, Self::Error> {
         if data.len() > N {
-            Err(SimpleSerializeError::List(Error::IncorrectLength {
-                expected: N,
-                provided: data.len(),
-            }))
+            Err(ListError::IncorrectLength)
         } else {
             let leaf_count = Self::get_leaf_count(data.len());
             Ok(Self {
@@ -294,7 +292,7 @@ pub struct IterMut<'a, T, const N: usize>
 where
     T: SimpleSerialize,
 {
-    inner: Enumerate<slice::IterMut<'a, T>>,
+    inner: Enumerate<StdIterMut<'a, T>>,
     cache: &'a mut MerkleCache,
 }
 

@@ -1,19 +1,15 @@
 use crate::SimpleSerialize;
-use thiserror::Error;
+use crate::std::{Vec, vec};
 
 // NOTE: if this is changed, go change in `ssz_derive` as well!
 pub const BYTES_PER_LENGTH_OFFSET: usize = 4;
 const MAXIMUM_LENGTH: u64 = 2u64.pow((8 * BYTES_PER_LENGTH_OFFSET) as u32);
 
-#[derive(Error, Debug)]
-#[error("the value could not be serialized: {0}")]
+#[derive(Debug)]
 pub enum SerializeError {
-    #[error("the encoded length is {0} which exceeds the maximum length {MAXIMUM_LENGTH}")]
-    MaximumEncodedLengthExceeded(usize),
-    #[error("the type for this value has a bound of {bound} but the value has {len} elements")]
-    TypeBoundsViolated { bound: usize, len: usize },
-    #[error("the type for this value has an illegal bound of {bound}")]
-    IllegalType { bound: usize },
+    MaximumEncodedLengthExceeded(usize), // the encoded length is {0} which exceeds the maximum length {MAXIMUM_LENGTH}
+    TypeBoundsViolated { bound: usize, len: usize }, // the type for this value has a bound of {bound} but the value has {len} elements"
+    IllegalType { bound: usize }, // the type for this value has an illegal bound of {bound}
 }
 
 pub trait Serialize {
