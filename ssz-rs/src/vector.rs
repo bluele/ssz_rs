@@ -16,7 +16,7 @@ use thiserror::Error;
 
 #[derive(Debug)]
 pub enum VectorError {
-    IncorrectLengthVector, // incorrect number of elements {provided} to make a Vector of length {expected}
+    IncorrectLength { expected: usize, provided: usize }, // incorrect number of elements {provided} to make a Vector of length {expected}
 }
 
 /// A homogenous collection of a fixed number of values.
@@ -94,7 +94,10 @@ impl<T: SimpleSerialize, const N: usize> TryFrom<Vec<T>> for Vector<T, N> {
 
     fn try_from(data: Vec<T>) -> Result<Self, Self::Error> {
         if data.len() != N {
-            Err(VectorError::IncorrectLengthVector)
+            Err(VectorError::IncorrectLength {
+                expected: N,
+                provided: data.len(),
+            })
         } else {
             let leaf_count = Self::get_leaf_count();
             Ok(Self {
@@ -223,7 +226,16 @@ where
             }
         }
         let data = deserialize_homogeneous_composite(encoding)?;
-        data.try_into().map_err(|_| DeserializeError::ExtraInput) // TODO fix error here
+        data.try_into().map_err(|err| match err {
+            VectorError::IncorrectLength { expected, provided } => {
+                if expected < provided {
+                    DeserializeError::ExtraInput
+                } else {
+                    DeserializeError::InputTooShort
+                }
+            }
+            _ => unreachable!("variants not returned from `try_into`"),
+        })
     }
 }
 

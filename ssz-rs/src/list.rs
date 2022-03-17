@@ -19,7 +19,7 @@ use thiserror::Error;
 
 #[derive(Debug)]
 pub enum ListError {
-    IncorrectLength , // elements given that exceeds the list bound of
+    IncorrectLength { expected: usize, provided: usize }, // elements given that exceeds the list bound of
 }
 
 /// A homogenous collection of a variable number of values.
@@ -128,7 +128,10 @@ where
 
     fn try_from(data: Vec<T>) -> Result<Self, Self::Error> {
         if data.len() > N {
-            Err(ListError::IncorrectLength)
+            Err(ListError::IncorrectLength{
+                expected: N,
+                provided: data.len(),
+            })
         } else {
             let leaf_count = Self::get_leaf_count(data.len());
             Ok(Self {
