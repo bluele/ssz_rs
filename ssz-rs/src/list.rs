@@ -4,18 +4,12 @@ use crate::merkleization::{
     BYTES_PER_CHUNK,
 };
 use crate::ser::{serialize_composite, Serialize, SerializeError};
-use crate::{SimpleSerialize, Sized};
-use crate::std::{Enumerate, FromIterator, Vec, fmt, SliceIndex, Deref, Index, IndexMut, IterMut as StdIterMut};
+use crate::std::{Enumerate, FromIterator, vec, Vec, fmt, SliceIndex, Deref, Index, IndexMut, IterMut as StdIterMut};
 use crate::{SimpleSerialize, SimpleSerializeError, Sized};
 #[cfg(feature = "serde")]
 use serde::ser::SerializeSeq;
-use std::iter::Enumerate;
 #[cfg(feature = "serde")]
 use std::marker::PhantomData;
-use std::ops::{Deref, Index, IndexMut};
-use std::slice::SliceIndex;
-use std::{fmt, slice};
-use thiserror::Error;
 
 #[derive(Debug)]
 pub enum ListError {
