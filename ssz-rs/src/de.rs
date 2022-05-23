@@ -1,6 +1,6 @@
 use crate::ser::BYTES_PER_LENGTH_OFFSET;
 use crate::SimpleSerialize;
-use crate::std::{Vec, vec};
+use crate::std::{Vec, vec, Debug, Display, Formatter};
 
 #[derive(Debug)]
 pub enum DeserializeError {
@@ -10,6 +10,18 @@ pub enum DeserializeError {
     IOError,
     TypeBoundsViolated { bound: usize, len: usize }, // the type for this value has a bound of {bound} but the value has {len} elements
     IllegalType { bound: usize }, // the type for this value has an illegal bound of {bound}
+}
+
+impl Debug for DeserializeError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+impl Display for DeserializeError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{:?}", self)
+    }
 }
 
 pub trait Deserialize {
