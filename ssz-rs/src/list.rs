@@ -4,8 +4,8 @@ use crate::merkleization::{
     BYTES_PER_CHUNK,
 };
 use crate::ser::{serialize_composite, Serialize, SerializeError};
-use crate::std::{Enumerate, FromIterator, vec, Vec, fmt, SliceIndex, Deref, Index, IndexMut, IterMut as StdIterMut};
-use crate::{SimpleSerialize, SimpleSerializeError, Sized};
+use crate::{SimpleSerialize, Sized};
+use crate::std::{Enumerate, FromIterator, vec, Vec, fmt, SliceIndex, Deref, Index, IndexMut, IterMut as StdIterMut, Debug, Display, Formatter, any};
 #[cfg(feature = "serde")]
 use serde::ser::SerializeSeq;
 #[cfg(feature = "serde")]
@@ -85,7 +85,7 @@ where
             write!(
                 f,
                 "List<{}, {}>(len={}){:#?}",
-                std::any::type_name::<T>(),
+                any::type_name::<T>(),
                 N,
                 self.len(),
                 self.data
@@ -94,7 +94,7 @@ where
             write!(
                 f,
                 "List<{}, {}>(len={}){:?}",
-                std::any::type_name::<T>(),
+                any::type_name::<T>(),
                 N,
                 self.len(),
                 self.data
