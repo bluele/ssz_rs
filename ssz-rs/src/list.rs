@@ -13,7 +13,15 @@ use std::marker::PhantomData;
 
 #[derive(Debug)]
 pub enum ListError {
-    IncorrectLength { expected: usize, provided: usize }, // elements given that exceeds the list bound of
+    IncorrectLength { expected: usize, provided: usize },
+}
+
+impl Display for ListError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        match *self {
+            ListError::IncorrectLength{ expected, provided } => write!(f, "{} elements given that exceeds the list bound of {}", provided, expected),
+        }
+    }
 }
 
 /// A homogenous collection of a variable number of values.
