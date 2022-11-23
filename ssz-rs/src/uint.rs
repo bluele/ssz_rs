@@ -92,7 +92,6 @@ impl U256 {
     }
 }
 
-#[cfg(feature = "serde")]
 impl From<u64> for U256 {
     fn from(x: u64) -> Self {
         Self(x.into())
