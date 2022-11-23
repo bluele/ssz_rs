@@ -4,7 +4,7 @@
 //! If/when this restriction is lifted in favor of const generics, the macro here
 //! can likely be simplified to a definition over `const N: usize`.
 use crate::de::{deserialize_homogeneous_composite, Deserialize, DeserializeError};
-use crate::std::{Vec, vec};
+use crate::std::*;
 use crate::merkleization::{
     merkleize, pack, MerkleizationError, Merkleized, Node, BYTES_PER_CHUNK,
 };

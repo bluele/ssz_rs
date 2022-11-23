@@ -3,7 +3,7 @@ mod node;
 mod proofs;
 
 use crate::ser::{Serialize};
-use crate::std::{Index, Vec, vec, Option, Debug, Ordering, fmt, Display, Formatter};
+use crate::std::*;
 use lazy_static::lazy_static;
 use sha2::{Digest, Sha256};
 

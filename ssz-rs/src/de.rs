@@ -1,6 +1,6 @@
 use crate::ser::BYTES_PER_LENGTH_OFFSET;
 use crate::SimpleSerialize;
-use crate::std::{Vec, vec, Debug, Display, Formatter};
+use crate::std::*;
 
 #[derive(Debug)]
 pub enum DeserializeError {

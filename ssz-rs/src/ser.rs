@@ -1,5 +1,5 @@
 use crate::SimpleSerialize;
-use crate::std::{Vec, vec, Debug, Display, Formatter};
+use crate::std::*;
 
 // NOTE: if this is changed, go change in `ssz_derive` as well!
 pub const BYTES_PER_LENGTH_OFFSET: usize = 4;
