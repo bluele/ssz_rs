@@ -1,8 +1,8 @@
 use crate::de::{Deserialize, DeserializeError};
 use crate::merkleization::{merkleize, pack_bytes, MerkleizationError, Merkleized, Node};
 use crate::ser::{Serialize, SerializeError};
-use crate::{SimpleSerialize, Sized};
 use crate::std::*;
+use crate::{SimpleSerialize, Sized};
 use bitvec::field::BitField;
 use bitvec::prelude::{BitVec, Lsb0};
 
@@ -93,7 +93,9 @@ impl<const N: usize> Bitvector<N> {
 
     fn pack_bits(&self) -> Result<Vec<u8>, MerkleizationError> {
         let mut data = vec![];
-        let _ = self.serialize(&mut data).map_err(|_| MerkleizationError::SerializationError);
+        let _ = self
+            .serialize(&mut data)
+            .map_err(|_| MerkleizationError::SerializationError);
         pack_bytes(&mut data);
         Ok(data)
     }

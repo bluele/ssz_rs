@@ -1,12 +1,12 @@
 use crate::ser::BYTES_PER_LENGTH_OFFSET;
-use crate::SimpleSerialize;
 use crate::std::*;
+use crate::SimpleSerialize;
 
 #[derive(Debug)]
 pub enum DeserializeError {
     InputTooShort, // unexpected additional data provided when decoding
-    ExtraInput, // invalid data for expected type
-    InvalidInput, // invalid data for expected type
+    ExtraInput,    // invalid data for expected type
+    InvalidInput,  // invalid data for expected type
     IOError,
     TypeBoundsViolated { bound: usize, len: usize }, // the type for this value has a bound of {bound} but the value has {len} elements
     IllegalType { bound: usize }, // the type for this value has an illegal bound of {bound}
@@ -16,11 +16,21 @@ impl Display for DeserializeError {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match *self {
             DeserializeError::InputTooShort => write!(f, "expected further data when decoding"),
-            DeserializeError::ExtraInput => write!(f, "unexpected additional data provided when decoding"),
+            DeserializeError::ExtraInput => {
+                write!(f, "unexpected additional data provided when decoding")
+            }
             DeserializeError::InvalidInput => write!(f, "invalid data for expected type"),
             DeserializeError::IOError => write!(f, "IOError"),
-            DeserializeError::TypeBoundsViolated { bound, len } => write!(f, "the type for this value has a bound of {} but the value has {} elements", bound, len),
-            DeserializeError::IllegalType { bound } => write!(f, "the type for this value has an illegal bound of {}", bound),
+            DeserializeError::TypeBoundsViolated { bound, len } => write!(
+                f,
+                "the type for this value has a bound of {} but the value has {} elements",
+                bound, len
+            ),
+            DeserializeError::IllegalType { bound } => write!(
+                f,
+                "the type for this value has an illegal bound of {}",
+                bound
+            ),
         }
     }
 }

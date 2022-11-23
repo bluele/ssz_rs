@@ -3,8 +3,8 @@ use crate::merkleization::{
     merkleize, mix_in_length, pack_bytes, MerkleizationError, Merkleized, Node,
 };
 use crate::ser::{Serialize, SerializeError};
-use crate::{SimpleSerialize, Sized};
 use crate::std::*;
+use crate::{SimpleSerialize, Sized};
 use bitvec::prelude::{BitVec, Lsb0};
 
 type BitlistInner = BitVec<u8, Lsb0>;
@@ -86,7 +86,9 @@ impl<const N: usize> Bitlist<N> {
 
     fn pack_bits(&self) -> Result<Vec<u8>, MerkleizationError> {
         let mut data = vec![];
-        let _ = self.serialize_with_length(&mut data, false).map_err(|_| MerkleizationError::SerializationError);
+        let _ = self
+            .serialize_with_length(&mut data, false)
+            .map_err(|_| MerkleizationError::SerializationError);
         pack_bytes(&mut data);
         Ok(data)
     }

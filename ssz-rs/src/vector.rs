@@ -3,8 +3,8 @@ use crate::merkleization::{
     merkleize, pack, MerkleCache, MerkleizationError, Merkleized, Node, BYTES_PER_CHUNK,
 };
 use crate::ser::{serialize_composite, Serialize};
-use crate::{SerializeError, SimpleSerialize, Sized};
 use crate::std::*;
+use crate::{SerializeError, SimpleSerialize, Sized};
 #[cfg(feature = "serde")]
 use serde::ser::SerializeSeq;
 #[cfg(feature = "serde")]
@@ -26,7 +26,11 @@ pub struct Vector<T: SimpleSerialize, const N: usize> {
 impl Display for VectorError {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match *self {
-            VectorError::IncorrectLength{ expected, provided } => write!(f, "incorrect number of elements {} to make a Vector of length {}", provided, expected),
+            VectorError::IncorrectLength { expected, provided } => write!(
+                f,
+                "incorrect number of elements {} to make a Vector of length {}",
+                provided, expected
+            ),
         }
     }
 }
@@ -126,13 +130,7 @@ where
                 self.data
             )
         } else {
-            write!(
-                f,
-                "Vector<{}, {}>{:?}",
-                any::type_name::<T>(),
-                N,
-                self.data
-            )
+            write!(f, "Vector<{}, {}>{:?}", any::type_name::<T>(), N, self.data)
         }
     }
 }

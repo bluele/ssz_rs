@@ -2,7 +2,7 @@ mod cache;
 mod node;
 mod proofs;
 
-use crate::ser::{Serialize};
+use crate::ser::Serialize;
 use crate::std::*;
 use lazy_static::lazy_static;
 use sha2::{Digest, Sha256};
@@ -20,17 +20,25 @@ pub trait Merkleized {
 
 #[derive(Debug)]
 pub enum MerkleizationError {
-    SerializationError, // failed to serialize value
+    SerializationError,           // failed to serialize value
     PartialChunk(Vec<u8>, usize), // cannot merkleize a partial chunk of length {1} (data: {0:?})
-    InputExceedsLimit(usize), // cannot merkleize data that exceeds the declared limit {0}
+    InputExceedsLimit(usize),     // cannot merkleize data that exceeds the declared limit {0}
 }
 
 impl Display for MerkleizationError {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match self {
             MerkleizationError::SerializationError => write!(f, "failed to serialize value"),
-            MerkleizationError::PartialChunk(chunk, size) => write!(f, "cannot merkleize a partial chunk of length {} (data: {:?}", size, chunk),
-            MerkleizationError::InputExceedsLimit(size) => write!(f, "cannot merkleize data that exceeds the declared limit: {}", size),
+            MerkleizationError::PartialChunk(chunk, size) => write!(
+                f,
+                "cannot merkleize a partial chunk of length {} (data: {:?}",
+                size, chunk
+            ),
+            MerkleizationError::InputExceedsLimit(size) => write!(
+                f,
+                "cannot merkleize data that exceeds the declared limit: {}",
+                size
+            ),
         }
     }
 }
@@ -52,7 +60,9 @@ where
 {
     let mut buffer = vec![];
     for value in values {
-        value.serialize(&mut buffer).map_err(|_| MerkleizationError::SerializationError)?;
+        value
+            .serialize(&mut buffer)
+            .map_err(|_| MerkleizationError::SerializationError)?;
     }
     pack_bytes(&mut buffer);
     Ok(buffer)
