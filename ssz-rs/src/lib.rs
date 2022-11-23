@@ -17,7 +17,7 @@ mod serde_test;
 mod uint;
 mod union;
 mod vector;
-pub mod std;
+mod std;
 
 pub use crate::std::{Vec, vec};
 pub use bitlist::Bitlist;
