@@ -19,7 +19,7 @@ mod uint;
 mod union;
 mod vector;
 
-pub use crate::std::*;
+use crate::std::*;
 pub use bitlist::Bitlist;
 pub use bitvector::Bitvector;
 pub use de::{Deserialize, DeserializeError};
@@ -27,6 +27,7 @@ pub use list::List;
 pub use merkleization::{Context as MerkleizationContext, MerkleizationError, Merkleized, Node};
 pub use ser::{Serialize, SerializeError};
 pub use uint::U256;
+pub use vector::Vector;
 
 /// `Sized` is a trait for types that can
 /// provide sizing information relevant for the SSZ spec.
