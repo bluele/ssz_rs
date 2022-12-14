@@ -3,7 +3,7 @@ mod node;
 mod proofs;
 
 use crate::ser::Serialize;
-use crate::std::*;
+use crate::lib::*;
 use lazy_static::lazy_static;
 use sha2::{Digest, Sha256};
 
@@ -67,7 +67,7 @@ where
 {
     let mut buffer = vec![];
     for value in values {
-        value.serialize(&mut buffer);
+        value.serialize(&mut buffer)?;
     }
     pack_bytes(&mut buffer);
     Ok(buffer)

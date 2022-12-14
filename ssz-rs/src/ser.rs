@@ -1,4 +1,4 @@
-use crate::std::*;
+use crate::lib::*;
 use crate::SimpleSerialize;
 
 // NOTE: if this is changed, go change in `ssz_derive` as well!
