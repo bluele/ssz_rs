@@ -5,7 +5,7 @@ use crate::merkleization::{
 };
 use crate::ser::{serialize_composite, Serialize, SerializeError};
 use crate::lib::*;
-use crate::{SimpleSerialize, Sized};
+use crate::{SimpleSerialize, SimpleSerializeError, Sized};
 #[cfg(feature = "serde")]
 use serde::ser::SerializeSeq;
 #[cfg(feature = "serde")]
@@ -19,11 +19,7 @@ pub enum ListError {
 impl Display for ListError {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match *self {
-            ListError::IncorrectLength { expected, provided } => write!(
-                f,
-                "{} elements given that exceeds the list bound of {}",
-                provided, expected
-            ),
+            ListError::IncorrectLength { expected, provided } => write!(f, "{} elements given that exceeds the list bound of {}", provided, expected),
         }
     }
 }
@@ -130,14 +126,14 @@ impl<T, const N: usize> TryFrom<Vec<T>> for List<T, N>
 where
     T: SimpleSerialize,
 {
-    type Error = ListError;
+    type Error = SimpleSerializeError;
 
     fn try_from(data: Vec<T>) -> Result<Self, Self::Error> {
         if data.len() > N {
-            Err(ListError::IncorrectLength {
+            Err(SimpleSerializeError::List(ListError::IncorrectLength {
                 expected: N,
                 provided: data.len(),
-            })
+            }))
         } else {
             let leaf_count = Self::get_leaf_count(data.len());
             Ok(Self {
