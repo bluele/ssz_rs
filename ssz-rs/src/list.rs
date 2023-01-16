@@ -9,7 +9,7 @@ use crate::{SimpleSerialize, SimpleSerializeError, Sized};
 #[cfg(feature = "serde")]
 use serde::ser::SerializeSeq;
 #[cfg(feature = "serde")]
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
 #[derive(Debug)]
 pub enum ListError {
